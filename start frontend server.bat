@@ -1,2 +1,2 @@
 cd water-mango-frontend
-ng serve
+npm install && ng serve

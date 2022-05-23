@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://localhost:7218/watermangobackend'
+  apiUrl: 'http://localhost:5248/watermangobackend'
 };
 
 /*
