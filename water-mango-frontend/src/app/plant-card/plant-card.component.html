@@ -1,5 +1,6 @@
 <mat-card class="plant-card-spacing">
     <mat-card-header>
+      <img mat-card-avatar [src]="plant.imageUrl"  />
       <mat-card-title>{{plant.name}}</mat-card-title>
       <mat-card-subtitle>Last Watered - {{ plant.lastWateredTime | date:'medium' }}</mat-card-subtitle>
     </mat-card-header>

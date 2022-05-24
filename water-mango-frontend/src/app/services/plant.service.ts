@@ -15,7 +15,7 @@ export class PlantService {
     return this.http.get<Plant[]>(`${environment.apiUrl}/getPlants`)
     .pipe(
       map(plants => plants.map(plant => { 
-        return new Plant(plant.id, plant.name, new Date(plant.lastWateredTime));
+        return new Plant(plant.id, plant.name, new Date(plant.lastWateredTime), plant.imageUrl);
        })
     ));
   }
@@ -28,7 +28,7 @@ export class PlantService {
     return this.http.post<Plant>(`${environment.apiUrl}/updateLastWateredTime`, params)
     .pipe(
       map(plant => { 
-        return new Plant(plant.id, plant.name, new Date(plant.lastWateredTime));
+        return new Plant(plant.id, plant.name, new Date(plant.lastWateredTime), plant.imageUrl);
       })
     );
   }
