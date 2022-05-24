@@ -35,10 +35,6 @@ namespace WaterMangoBackend
                 Id = 5, Name = "Sea Holly", LastWateredTime = DateTime.Now,
                 ImageUrl = "https://cdn.pixabay.com/photo/2012/02/17/14/53/alpine-sea-holly-14129_1280.jpg"
             });
-            modelBuilder.Entity<Plant>().HasData(new Plant { 
-                Id = 6, Name = "Thornless Honeylocust", LastWateredTime = DateTime.Now,
-                ImageUrl = "https://live.staticflickr.com/65535/40713266143_9126230a1e_b.jpg"
-            });
         }
     }
 }
