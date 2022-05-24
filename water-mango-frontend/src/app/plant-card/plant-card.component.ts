@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { interval, Subscription } from 'rxjs';
+import { interval, Observable, Subscription } from 'rxjs';
 import { Plant } from '../models/plant';
 import { PlantService } from '../services/plant.service';
 
@@ -14,7 +14,7 @@ export class PlantCardComponent {
   plantBeingWatered: boolean = false;
   wateringProgressBarValue: number = 0;
   timeWateredMilliseconds: number = 0;
-  timer = interval(10);
+  timer: Observable<number> = interval(10);
   intervalCounter: number = 0;
   subscription: Subscription;
   wateringStatusText: string = "Idle";
