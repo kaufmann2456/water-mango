@@ -1,0 +1,14 @@
+.plant-card-spacing {
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-bottom: 20px;
+    margin-right: 50px;
+}
+
+.button-width {
+    width: 90px;
+}
+
+.status-text {
+    color: rgba(0,0,0,.54);
+}

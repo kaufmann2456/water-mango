@@ -1,10 +1,7 @@
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using WaterMangoBackend.Model;
 
 namespace WaterMangoBackend.Controllers
@@ -23,6 +20,22 @@ namespace WaterMangoBackend.Controllers
             }
 
             return Ok(plants);
+        }
+
+        [HttpPost("updateLastWateredTime")]   
+        public IActionResult UpdateLastWateredTime([FromForm]int id, [FromForm] string dateTime)
+        {
+            Plant plant = new Plant();
+            DateTime updatedLastWateredTime = DateTime.Parse(dateTime);
+            using (var context = new WaterMangoDatabaseContext()) 
+            {
+                plant = context.Plants.Where(i => i.Id == id).FirstOrDefault();
+                if(plant != null) {
+                    plant.LastWateredTime = updatedLastWateredTime;
+                    context.SaveChanges();
+                }
+            }
+            return Ok(plant);
         }
     }
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Plant } from '../models/plant';
 import { map, Observable } from 'rxjs';
@@ -18,5 +18,18 @@ export class PlantService {
         return new Plant(plant.id, plant.name, new Date(plant.lastWateredTime));
        })
     ));
+  }
+
+  updateLastWateredTime(id: number, dateTime: Date): Observable<Plant> {
+    let params = new HttpParams()
+    .set("id", id)
+    .set("dateTime", dateTime.toISOString());
+    
+    return this.http.post<Plant>(`${environment.apiUrl}/updateLastWateredTime`, params)
+    .pipe(
+      map(plant => { 
+        return new Plant(plant.id, plant.name, new Date(plant.lastWateredTime));
+      })
+    );
   }
 }

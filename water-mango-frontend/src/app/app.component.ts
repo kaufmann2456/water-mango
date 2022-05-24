@@ -8,13 +8,17 @@ import { PlantService } from './services/plant.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'water-mango-frontend';
+  plants: Plant[];
 
-  constructor(private plantService: PlantService) {
+  constructor(plantService: PlantService) {
     plantService.getPlants().subscribe
-    (data => 
-      {
-        let plants: Plant[] = data;
-      });
+    (plants => {
+        this.plants = plants;
+      }
+    ),
+    (err => {
+      console.log(err);
+      }
+    );
   }
 }
