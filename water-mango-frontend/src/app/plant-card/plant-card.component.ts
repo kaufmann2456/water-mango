@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { interval, Subscription } from 'rxjs';
 import { Plant } from '../models/plant';
 import { PlantService } from '../services/plant.service';
@@ -18,11 +19,17 @@ export class PlantCardComponent {
   subscription: Subscription;
   wateringStatusText: string = "Idle";
 
-  constructor(private plantService: PlantService) { }
+  constructor(private plantService: PlantService, private snackBar: MatSnackBar) { }
 
-  handleWaterState() {
+  handleWaterState(): void {
+    // check if last watered time is within 30 seconds of current time
+    // alert user that plant cannot be watered again within 30 seconds
+    if (this.lastWateredTimeWithin30Seconds()) {
+      return;
+    }
+
     this.plantBeingWatered = !this.plantBeingWatered;
-    if(this.plantBeingWatered) {
+    if (this.plantBeingWatered) {
       this.wateringStatusText = "Watering...";
       this.waterPlant();
     } else {
@@ -31,7 +38,21 @@ export class PlantCardComponent {
     }
   }
 
-  private waterPlant() {
+  private lastWateredTimeWithin30Seconds(): boolean {
+    const thirtySeconds = 1000 * 30;
+    const thirtySecondsAgo = Date.now() - thirtySeconds;
+    const isWithin30Seconds = this.plant.lastWateredTime.getTime() >= thirtySecondsAgo;
+
+    if (isWithin30Seconds) {
+      this.snackBar.open(this.plant.name + " Needs Time to Absorb", "Got It", {
+        duration: 5000,
+      });
+    }
+
+    return isWithin30Seconds;
+  }
+
+  private waterPlant(): void {
     this.subscription = this.timer.subscribe(() => {
       this.wateringProgressBarValue =  this.timeWateredMilliseconds / 100;
       this.timeWateredMilliseconds = (this.intervalCounter++ * 10);
@@ -47,7 +68,7 @@ export class PlantCardComponent {
     });
   }
 
-  private updateLastWateredTime(dateTime: Date) {
+  private updateLastWateredTime(dateTime: Date): void {
     this.plantService.updateLastWateredTime(this.plant.id, dateTime).subscribe
     (plant => {
         this.plant = plant;
@@ -59,5 +80,26 @@ export class PlantCardComponent {
       this.wateringStatusText = "Error";
       }
     );
+  }
+
+  subtractOneHourFromLastWateredTime(): void {
+    this.plant.lastWateredTime.setHours(this.plant.lastWateredTime.getHours() - 1);
+    this.plantService.updateLastWateredTime(this.plant.id, this.plant.lastWateredTime).subscribe
+    (plant => {
+        this.plant = plant;
+        this.wateringStatusText = "Idle";
+      }
+    ),
+    (err => {
+      console.log(err);
+      this.wateringStatusText = "Error";
+      }
+    );
+  }
+
+  wateredMoreThanSixHoursAgo(): boolean {
+    const sixHour = 1000 * 60 * 60 * 6;
+    const sixHourAgo = Date.now() - sixHour;
+    return this.plant.lastWateredTime.getTime() < sixHourAgo;
   }
 }

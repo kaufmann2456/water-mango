@@ -11,14 +11,18 @@
             </mat-grid-tile>
             <mat-grid-tile [colspan]="1">
                 <button mat-raised-button color="primary" class="button-width"
-                (click)="handleWaterState()">{{plantBeingWatered ? 'Stop' : 'Water'}}</button>
+                  (click)="handleWaterState()">{{plantBeingWatered ? 'Stop' : 'Water'}}</button>
             </mat-grid-tile>
           </mat-grid-list>
-          <div class="status-text">
+          <div class="status-text" [ngClass]="{'success-text-colour': wateringStatusText === 'Success!'}">
               {{wateringStatusText}}
           </div>
+          <div *ngIf="wateredMoreThanSixHoursAgo()" class="error-text-spacing">
+            <mat-error>Plant has not been watered for over 6 hours</mat-error>
+          </div>
     </mat-card-content>
-    <!-- <mat-card-actions>
-      <button mat-button>WATER</button>
-    </mat-card-actions> -->
+    <mat-card-actions>
+      <button mat-raised-button color="accent" 
+        (click)="subtractOneHourFromLastWateredTime()">-1 Hour</button>
+    </mat-card-actions>
 </mat-card>

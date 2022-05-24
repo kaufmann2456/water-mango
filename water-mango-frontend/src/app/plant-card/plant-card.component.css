@@ -12,3 +12,11 @@
 .status-text {
     color: rgba(0,0,0,.54);
 }
+
+.success-text-colour {
+    color: green;
+}
+
+.error-text-spacing {
+    margin-top: 3px;
+}
